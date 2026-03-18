@@ -105,4 +105,4 @@ A centralized hub for project management:
 
 ## 📜 License
 
-This project is licensed under the MIT License - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/ashwiniwaiker/ai-code-reviewer/blob/main/LICENSE>) file for details.
