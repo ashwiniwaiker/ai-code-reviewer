@@ -1,0 +1,5 @@
+[tool.ai_reviewer]
+include = ["src/**/*.py"]
+exclude = ["tests/**/*.py"]
+coverage_threshold = 90
+style = "google"

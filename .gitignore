@@ -1,0 +1,11 @@
+# Environments
+.env
+venv/
+env/
+__pycache__/
+
+# for testing purposes
+project-copy-for-testing/
+
+# Mac system files
+.DS_Store
