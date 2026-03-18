@@ -20,7 +20,7 @@ Writing documentation and tracking technical debt is traditionally a slow, manua
 ### 2. Clone and Setup Environment
 ```bash
 # Clone the repository
-git clone https://github.com/ashwiniwaiker/ai-code-reviewer.git
+git clone [https://github.com/your-username/ai-code-reviewer.git](https://github.com/your-username/ai-code-reviewer.git)
 cd ai-code-reviewer
 
 # Create and activate a virtual environment
@@ -73,13 +73,17 @@ Using `pydocstyle` under the hood, the Validation tab scans every file in your p
 
 Powered by `radon`, the Metrics tab calculates the Cyclomatic Complexity of every function in your codebase. It flags "High Complexity" functions (score \> 5) so you know exactly which parts of your code are getting too deeply nested and might require refactoring.
 
-### 5\. Advanced Dashboard & Testing
+### 5\. Advanced Dashboard & Custom Testing
 
-A centralized hub for project management:
+A centralized hub for project management and testing:
 
   * **Filter & Search:** Instantly locate undocumented functions or search by name.
-  * **Test Integration:** Run your `pytest` suite directly from the UI to see pass/fail rates natively visualized in the browser.
+  * **Custom Test Integration:** The project comes with a pre-built `tests/` directory. **You can add your own custom `pytest` files to this folder\!** Once added, simply navigate to the Dashboard's "Test" tab to run your custom suite and visualize the pass/fail rates natively in the browser.
   * **Export:** Download your codebase analysis reports in JSON or CSV formats.
+
+### 6\. Built-in Sandbox (Examples Folder)
+
+Want to try out the AI generation and PEP 257 validation without risking your main project's codebase? We have included an `examples/` directory just for this\! Simply drop any sample Python scripts or dummy files into this folder, enter `examples/` in the sidebar's Project Path, and safely experiment with all the app's features.
 
 -----
 
@@ -93,8 +97,8 @@ A centralized hub for project management:
 │   ├── reporter/               # Coverage calculations
 │   └── validator/              # PEP 257 and complexity checks
 ├── dashboard_ui/               # Test compatibility stubs
-├── examples/                   # Sample code for testing
-├── tests/                      # Comprehensive pytest suite
+├── examples/                   # Sandbox folder for safe experimentation
+├── tests/                      # Add your custom pytest files here
 ├── ui/                         # Streamlit application
 │   └── app.py
 ├── .env.example                # Template for environment variables
@@ -105,4 +109,4 @@ A centralized hub for project management:
 
 ## 📜 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.

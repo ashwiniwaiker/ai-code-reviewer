@@ -31,7 +31,7 @@ with st.sidebar:
     st.header("Configuration")
     project_path = st.text_input("Project Path", value=st.session_state.project_path)
     
-    if st.button("Scan Project", type="primary", width="stretch"):
+    if st.button("Scan Project", type="primary", use_container_width=True):
         with st.spinner("Scanning project files..."):
             st.session_state.project_path = project_path
             # Natively use the core parser
@@ -293,11 +293,11 @@ elif view == "Dashboard":
         st.session_state.dash_nav = "Home"
 
     cols = st.columns(5)
-    if cols[0].button("Filter", width="stretch"): st.session_state.dash_nav = "Filter"
-    if cols[1].button("Search", width="stretch"): st.session_state.dash_nav = "Search"
-    if cols[2].button("Test", width="stretch"): st.session_state.dash_nav = "Test"
-    if cols[3].button("Export", width="stretch"): st.session_state.dash_nav = "Export"
-    if cols[4].button("Help", width="stretch"): st.session_state.dash_nav = "Help"
+    if cols[0].button("Filter", use_container_width=True): st.session_state.dash_nav = "Filter"
+    if cols[1].button("Search", use_container_width=True): st.session_state.dash_nav = "Search"
+    if cols[2].button("Test", use_container_width=True): st.session_state.dash_nav = "Test"
+    if cols[3].button("Export", use_container_width=True): st.session_state.dash_nav = "Export"
+    if cols[4].button("Help", use_container_width=True): st.session_state.dash_nav = "Help"
 
     st.divider()
 
@@ -377,45 +377,38 @@ elif view == "Dashboard":
                 failed_tests = []
                 test_stats = {}
                 
-                # Parse the real pytest output line by line safely
+                # Parse the real pytest output line by line
                 for line in result.stdout.split('\n'):
-                    parts = line.split()
-                    
-                    # 1. Safely handle normal test executions
-                    if len(parts) >= 2 and '::' in parts[0] and any(status in line for status in ['PASSED', 'FAILED', 'ERROR']):
+                    # 1. Handle normal test executions
+                    if '::' in line and any(status in line for status in ['PASSED', 'FAILED', 'ERROR']):
+                        parts = line.split()
                         test_path = parts[0]
                         status = parts[1]
                         
-                        try:
-                            # split('::', 1) prevents the ValueError by enforcing exactly 2 parts
-                            file_name, test_name = test_path.split('::', 1)
-                            mod_name = file_name.replace('tests/test_', '').replace('.py', '')
-                            
-                            if mod_name not in test_stats:
-                                test_stats[mod_name] = {"pass": 0, "fail": 0}
-                                
-                            if 'PASSED' in status:
-                                test_stats[mod_name]["pass"] += 1
-                                passed_tests.append(f"**{test_name}** `({file_name})`")
-                            else:
-                                test_stats[mod_name]["fail"] += 1
-                                failed_tests.append(f"**{test_name}** `({file_name})`")
-                        except ValueError:
-                            continue # Skip this line if it's a messy error log
-
-                    # 2. Handle the Collection/Import Errors
-                    elif line.startswith("ERROR tests/") and len(parts) >= 2:
-                        file_name = parts[1]
+                        file_name, test_name = test_path.split('::')
                         mod_name = file_name.replace('tests/test_', '').replace('.py', '')
                         
                         if mod_name not in test_stats:
-                            test_stats[mod_name] = {"pass": 0, "fail": 1} 
+                            test_stats[mod_name] = {"pass": 0, "fail": 0}
+                            
+                        if 'PASSED' in status:
+                            test_stats[mod_name]["pass"] += 1
+                            passed_tests.append(f"**{test_name}** `({file_name})`")
+                        else:
+                            test_stats[mod_name]["fail"] += 1
+                            failed_tests.append(f"**{test_name}** `({file_name})`")
+
+                    # 2. Handle the Collection/Import Errors you are currently getting
+                    elif line.startswith("ERROR tests/"):
+                        file_name = line.split(" ")[1]
+                        mod_name = file_name.replace('tests/test_', '').replace('.py', '')
+                        
+                        if mod_name not in test_stats:
+                            test_stats[mod_name] = {"pass": 0, "fail": 1} # Count errors as fails
                         else:
                             test_stats[mod_name]["fail"] += 1
                             
                         failed_tests.append(f"**Import/Collection Error** `({file_name})`")
-
-                        # --- PASTING THE MISSING UI CODE BACK IN ---
                 
                 # Failsafe if absolutely nothing runs
                 if not test_stats:
@@ -477,6 +470,7 @@ elif view == "Dashboard":
                             
                 with st.expander("View Raw Pytest Output"):
                     st.code(result.stdout)
+
     # 5. EXPORT VIEW
     elif st.session_state.dash_nav == "Export":
         st.subheader("Export Analysis report")
