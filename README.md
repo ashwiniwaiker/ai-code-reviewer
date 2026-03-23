@@ -20,7 +20,7 @@ Writing documentation and tracking technical debt is traditionally a slow, manua
 ### 2. Clone and Setup Environment
 ```bash
 # Clone the repository
-git clone [https://github.com/your-username/ai-code-reviewer.git](https://github.com/your-username/ai-code-reviewer.git)
+git clone https://github.com/ashwiniwaiker/ai-code-reviewer
 cd ai-code-reviewer
 
 # Create and activate a virtual environment
